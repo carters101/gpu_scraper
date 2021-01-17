@@ -1,21 +1,43 @@
-import smtplib, ssl
+import smtplib
 import table
 import pandas as pd
 import getpass
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+import sys
 
 sender_email = input('What address is sending the email? ')
 recipient_email = input('What address is receving the email? ')
 password = getpass.getpass('Sender password: ')
-message = '''\
-Subject: A GPU is in stock!
 
-It looks like some GPUs meet your criteria! Check them out below.\n'''
-
-# Create SSL context
-context = ssl.create_default_context()
+# Begin setting up HTML email
+msg = MIMEMultipart()
+msg['Subject'] = 'A GPU is in stock!'
+msg['From'] = sender_email
 
 # Email function receives DataFrame as input
 def send_email(body):
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context = context) as server:
+    # Formats the email for HTML
+    html = '''\
+        <html>
+            <head>
+                <h2>Check the table below for more info.</h2>
+            </head>
+            <body>
+                {0}
+            </body>
+        </html>
+        '''.format(body.to_html())
+    part1 = MIMEText(html, 'html')
+    msg.attach(part1)
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        print('test 1')
         server.login(sender_email, password)
-        server.sendmail(sender_email, recipient_email, message + body)
+        print('test 2')
+        server.sendmail(msg['From'], recipient_email, msg.as_string())
+        print('test 3')
+        server.quit()
+        print('Email sent succesully')
