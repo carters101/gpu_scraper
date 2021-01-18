@@ -22,10 +22,13 @@ def update():
     for item in all_gpus:
         title_elem = item.find('a', class_='item-title').text.strip()
         price_elem = item.find('li', class_='price-current').find('strong').text + item.find('li', class_='price-current').find('sup').text.strip()
-        stock_elem = item.find('p', class_='item-promo').text.strip()
+        stock_elem = item.find('p', class_='item-promo')
         stock_bool = True
-        if stock_elem == 'OUT OF STOCK':
-            stock_bool = False
+
+        if stock_elem != None:
+            stock_elem = stock_elem.text.strip()
+            if stock_elem == 'OUT OF STOCK':
+                stock_bool = False
 
         writer.writerow([title_elem, price_elem, stock_bool])
     file.close()
