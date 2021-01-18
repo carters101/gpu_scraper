@@ -34,10 +34,7 @@ def send_email(body):
 
     with smtplib.SMTP('smtp.gmail.com', 587) as server:
         server.starttls()
-        print('test 1')
         server.login(sender_email, password)
-        print('test 2')
         server.sendmail(msg['From'], recipient_email, msg.as_string())
-        print('test 3')
         server.quit()
         print('Email sent succesully')
