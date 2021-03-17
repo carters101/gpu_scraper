@@ -15,10 +15,6 @@ def update():
     # Create title row
     writer.writerow(['Product Name', 'Price', 'Availability'])
 
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    all_gpus = soup.find_all('div', class_='item-cell') 
-
     for item in all_gpus:
         title_elem = item.find('a', class_='item-title').text.strip()
         price_elem = item.find('li', class_='price-current').find('strong').text + item.find('li', class_='price-current').find('sup').text.strip()

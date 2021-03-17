@@ -16,4 +16,5 @@ while True:
 
     else:
         print("No GPU's meet your criteria. Trying again in 5 minutes.")
+        print(dataframe)
         time.sleep(300)

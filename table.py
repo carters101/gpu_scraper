@@ -19,6 +19,3 @@ def check_available(input_df):
         return True
     else:
         return False
-
-check_available(create_table())
-print(gpu_names)
